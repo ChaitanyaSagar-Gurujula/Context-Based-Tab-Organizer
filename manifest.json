@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Context-Based Tab Organizer",
+  "version": "1.0",
+  "description": "Organizes tabs based on title and URL using AI",
+  "permissions": [
+    "tabs",
+    "storage",
+    "scripting",
+    "tabGroups",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  }
+}

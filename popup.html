@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab Organizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      margin: 0;
+      padding-bottom: 30px; /* Increased bottom padding */
+      font-size: 12px; /* Reduced from 14px */
+    }
+    h1 {
+      font-size: 18px; /* Reduced from 20px */
+      margin-bottom: 16px;
+      color: #1a73e8;
+      display: flex;
+      align-items: center;
+    }
+    h1 .material-icons {
+      margin-right: 8px;
+    }
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px; /* Reduced from 14px */
+      font-weight: 500;
+      text-transform: uppercase;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #1565c0;
+    }
+    button .material-icons {
+      margin-right: 8px;
+    }
+    #categoryList {
+      margin-top: 16px;
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      overflow: hidden;
+    }
+    .category-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 12px;
+      overflow: hidden;
+    }
+    .category-item:last-child {
+      border-bottom: none;
+    }
+    .category-label {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      margin-right: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .grouped {
+      font-weight: 500;
+      color: #1a73e8;
+    }
+    #organizationOptions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+    #organizationOptions button {
+      width: 30%;
+      padding: 8px;
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 20px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #1a73e8;
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+    #selectAllContainer {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    #selectAllContainer label {
+      margin-left: 8px;
+    }
+    #bottomOptions {
+      display: flex;
+      flex-direction: column;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+    #messageArea {
+      position: fixed;
+      bottom: 16px; /* Increased from 0 to create space */
+      left: 16px; /* Added left padding */
+      right: 16px; /* Added right padding */
+      padding: 12px;
+      font-weight: 500;
+      display: none;
+      z-index: 1000;
+      text-align: center;
+      border-radius: 4px; /* Added rounded corners */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Added subtle shadow */
+    }
+    .success {
+      background-color: #e8f5e9;
+      color: #1b5e20;
+    }
+    .error {
+      background-color: #ffebee;
+      color: #b71c1c;
+    }
+    .small-toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 32px; /* Fixed width */
+      height: 16px;
+      flex-shrink: 0; /* Prevent shrinking */
+      margin-left: auto;
+    }
+    .small-toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .small-toggle-switch .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 16px;
+    }
+    .small-toggle-switch .slider:before {
+      position: absolute;
+      content: "";
+      height: 12px;
+      width: 12px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    .small-toggle-switch input:checked + .slider {
+      background-color: #1a73e8;
+    }
+    .small-toggle-switch input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+    .icon-button {
+      position: relative;
+    }
+    .icon-button::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: 100%; /* Changed from bottom: 100% to top: 100% */
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: white;
+      padding: 5px;
+      border-radius: 3px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s, visibility 0.15s;
+      pointer-events: none;
+      font-size: 12px;
+      font-weight: normal;
+      text-transform: none;
+      margin-top: 5px; /* Added to give some space between icon and tooltip */
+    }
+    .icon-button:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+    #combineAllWindowsButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    #combineAllWindowsButton:hover {
+      background-color: #1565c0;
+    }
+    #combineAllWindowsButton .icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+    #combineAllWindowsButton .button-text {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+      text-transform: none; /* Ensure no text transformation is applied */
+    }
+    #combineAllWindowsButton:hover .icon-wrapper {
+      opacity: 0;
+    }
+    #combineAllWindowsButton:hover .button-text {
+      opacity: 1;
+    }
+    #removeDuplicatesContainer {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+    }
+    #removeDuplicatesContainer input {
+      margin-right: 8px;
+    }
+    #removeDuplicatesContainer label {
+      font-size: 12px;
+    }
+    /* Consistent font styling for all button text */
+    button, .button-text, label {
+      font-family: 'Roboto', sans-serif;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1><i class="material-icons">tab</i> Tab Organizer</h1>
+  <div id="selectAllContainer">
+    <label class="toggle-switch">
+      <input type="checkbox" id="selectAll">
+      <span class="slider"></span>
+    </label>
+    <label for="selectAll">Select All Categories</label>
+  </div>
+  <div id="categoryList"></div>
+  <div id="organizationOptions">
+    <button id="separateWindowsButton" class="icon-button" data-tooltip="Slide to New Window">
+      <i class="material-icons">open_in_new</i>
+    </button>
+    <button id="groupTabsButton" class="icon-button" data-tooltip="Group Tabs">
+      <i class="material-icons">group_work</i>
+    </button>
+    <button id="ungroupTabsButton" class="icon-button" data-tooltip="Ungroup Tabs">
+      <i class="material-icons">clear_all</i>
+    </button>
+  </div>
+  <div id="bottomOptions">
+    <button id="combineAllWindowsButton" class="icon-button full-width">
+      <span class="icon-wrapper"><i class="material-icons">merge_type</i></span>
+      <span class="button-text">Combine All Windows</span>
+    </button>
+    <div id="removeDuplicatesContainer">
+      <input type="checkbox" id="removeDuplicates">
+      <label for="removeDuplicates">Remove Duplicates</label>
+    </div>
+  </div>
+  <div id="messageArea"></div>
+  <button id="viewAllTabsButton">View All Tab Categories</button>
+  <script src="popup.js"></script>
+</body>
+</html>

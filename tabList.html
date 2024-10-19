@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tab Categories</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .tab-item { margin-bottom: 10px; }
+    .category { font-weight: bold; margin-right: 10px; }
+    .tab-title { 
+      cursor: pointer; 
+      color: #0000EE; 
+      text-decoration: underline; 
+    }
+    .tab-title:hover { 
+      color: #551A8B; 
+    }
+    #searchBar, #categoryFilter {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+    #filterContainer {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    #filterContainer > * {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tab Categories</h1>
+  <div id="filterContainer">
+    <input type="text" id="searchBar" placeholder="Search tabs...">
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+    </select>
+  </div>
+  <div id="tabList"></div>
+  <script src="tabList.js"></script>
+</body>
+</html>
