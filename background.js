@@ -1,5 +1,5 @@
-// Store your Cohere API key securely
-const COHERE_API_KEY = '<aEWnXOZx1yyy2pgCRo7VwqYpkpJpV9pgn9WegSjY>';
+// Store your Cohere API key 
+const COHERE_API_KEY = '<enter_your_coher_api_key_here>';
 
 
 // Modify the listeners
